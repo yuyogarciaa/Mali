@@ -1,5 +1,7 @@
 package com.example.mali;
 
+import static com.google.android.material.tabs.TabLayout.GRAVITY_FILL;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         tablayout.addTab(tablayout.newTab().setText("Login"));
         tablayout.addTab(tablayout.newTab().setText("Signup"));
-        tablayout.setTabGravity(tablayout.GRAVITY_FILL);
+        tablayout.setTabGravity(GRAVITY_FILL);
 
         final LoginAdapter adapter = new  LoginAdapter(getSupportFragmentManager(),this,tablayout.getTabCount());
         viewpager.setAdapter(adapter);

@@ -1,5 +1,6 @@
 package com.example.mali;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,10 +8,27 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class login_fragment extends Fragment {
+
+    int chace = 2;
+    String str_email,str_password;
+    String url="https://projects-insane.000webhostapp.com/login/validar.php";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -22,6 +40,66 @@ public class login_fragment extends Fragment {
         Button login = root.findViewById(R.id.btnlogin);
 
         float v = 0;
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (email.getText().toString().equals("")){
+                    Toast.makeText(getContext().getApplicationContext(), "enter your email",Toast.LENGTH_SHORT).show();
+                }
+                else if (pass.getText().toString().equals("")){
+                    Toast.makeText(getContext().getApplicationContext(), "enter your password",Toast.LENGTH_SHORT).show();
+                }else{
+                    str_email = email.getText().toString().trim();
+                    str_password = pass.getText().toString().trim();
+
+                    StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            if (response.equalsIgnoreCase("you entered correctly")) {
+                                email.setText("");
+                                pass.setText("");
+                                startActivity(new Intent(getContext().getApplicationContext(),Welcome.class));
+                                chace=0;
+                                Toast.makeText(getContext().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                            }else if(chace==0){
+                                Toast.makeText(getContext().getApplicationContext(),"Reset Password",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), forget_pass.class);
+                                startActivity(intent);
+                                login.setEnabled(false);
+                            }else if(response.equalsIgnoreCase("wrong password or email")){
+                                Toast.makeText(getContext().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                                chace=chace-1;
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    ) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("password", str_password);
+                            params.put("email", str_email);
+                            return params;
+                        }
+                    };
+                    RequestQueue requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
+                    requestQueue.add(request);
+                }
+            }
+        });
+
+        forget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext().getApplicationContext(),forget_pass.class));
+            }
+        });
+
 
         email.setTranslationX(800);
         pass.setTranslationX(800);

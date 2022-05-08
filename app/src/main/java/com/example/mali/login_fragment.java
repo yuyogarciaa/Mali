@@ -60,7 +60,8 @@ public class login_fragment extends Fragment {
                                 email.setText("");
                                 pass.setText("");
                                 startActivity(new Intent(getContext().getApplicationContext(),Welcome.class));
-                                chace=0;
+
+                                chace=2;
                                 Toast.makeText(getContext().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                             }else if(chace==0){
                                 Toast.makeText(getContext().getApplicationContext(),"Reset Password",Toast.LENGTH_SHORT).show();

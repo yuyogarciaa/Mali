@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -21,8 +23,11 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class signup_fragment extends Fragment {
+
+
 
     String str_fullname, str_email,str_password, str_username;
     //url para consumir el webservice
@@ -36,10 +41,9 @@ public class signup_fragment extends Fragment {
         EditText email = root.findViewById(R.id.email);
         EditText pass = root.findViewById(R.id.pass);
         EditText name = root.findViewById(R.id.fullname);
-        EditText user = root.findViewById(R.id.username);
         Button signup = root.findViewById(R.id.buttonsignup);
-        float v = 0;
 
+        float v = 0;
 
         //Boton de Registro
         signup.setOnClickListener(new View.OnClickListener() {
@@ -56,15 +60,17 @@ public class signup_fragment extends Fragment {
                 else if (pass.getText().toString().equals("")){
                     Toast.makeText(getContext().getApplicationContext(), "enter your password",Toast.LENGTH_SHORT).show();
                 }
-                else if (user.getText().toString().equals("")){
-                    Toast.makeText(getContext().getApplicationContext(), "enter your username",Toast.LENGTH_SHORT).show();
-                }
                 else {
+
+                    int i = new Random().nextInt(9999) + 1000;
+                    //parseo a string
+                    String str_username = "mali"+Integer.toString(i).trim();
+
                     //Se validan y se pasan a variante de tipo string
                     str_fullname = name.getText().toString().trim();
                     str_email = email.getText().toString().trim();
                     str_password = pass.getText().toString().trim();
-                    str_username = user.getText().toString().trim();
+
 
                     StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                         @Override
@@ -73,7 +79,6 @@ public class signup_fragment extends Fragment {
                             name.setText("");
                             email.setText("");
                             pass.setText("");
-                            user.setText("");
                             Toast.makeText(getContext().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                         }
                     }, new Response.ErrorListener() {
@@ -106,19 +111,16 @@ public class signup_fragment extends Fragment {
         email.setTranslationX(800);
         pass.setTranslationX(800);
         name.setTranslationX(800);
-        user.setTranslationX(800);
         signup.setTranslationX(800);
 
         email.setAlpha(v);
         pass.setAlpha(v);
         name.setAlpha(v);
-        user.setAlpha(v);
         signup.setAlpha(v);
 
         email.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(300).start();
         name.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
         pass.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
-        user.animate().translationX(0).alpha(1).setDuration(800).setDuration(500).start();
         signup.animate().translationX(0).alpha(1).setDuration(800).setDuration(800).start();
 
         return root;

@@ -2,7 +2,7 @@ package com.example.mali;
 
 public class Task {
 
-    private String id, title, Desciption, status_id, subject, start_task, end_task, responsible, username, project;
+    private String id, title, Desciption, Status, subject, start_task, end_task, responsible, username, project;
 
     public Task() {
     }
@@ -11,7 +11,7 @@ public class Task {
         this.id = id;
         this.title = title;
         this.Desciption = desciption;
-        this.status_id = status_id;
+        this.Status = status_id;
         this.subject = subject;
         this.start_task = start_task;
         this.end_task = end_task;
@@ -45,11 +45,11 @@ public class Task {
     }
 
     public String getStatus_id() {
-        return status_id;
+        return Status;
     }
 
     public void setStatus_id(String status_id) {
-        this.status_id = status_id;
+        this.Status = status_id;
     }
 
     public String getSubject() {

@@ -1,14 +1,20 @@
 package com.example.mali;
 
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -41,6 +47,35 @@ public class Welcome extends AppCompatActivity {
         list = findViewById(R.id.listview);
         adapter = new adapter(Welcome.this, arraytask);
         list.setAdapter(adapter);
+
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                ProgressDialog progressDialog=new ProgressDialog(view.getContext());
+
+                CharSequence[] dialaogoItem = {"Ver datos", "Editar datos","Eliminar datos"};
+                builder.setTitle(arraytask.get(position).getTitle());
+                builder.setItems(dialaogoItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i){
+
+                            case 0:
+                                startActivity(new Intent(getApplicationContext(),Detalles.class)
+                                .putExtra("position", position));
+                                break;
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                        }
+                    }
+                });
+                builder.create().show();
+            }
+        });
         mostrardatos();
     }
 
@@ -64,7 +99,7 @@ public class Welcome extends AppCompatActivity {
                             String str_id = object.getString("id");
                             String str_title = object.getString("title");
                             String str_description = object.getString("Desciption");
-                            String str_status = object.getString("status_id");
+                            String str_status = object.getString("Status");
                             String str_subject = object.getString("subject");
                             String str_st = object.getString("start_task");
                             String str_et = object.getString("end_task");

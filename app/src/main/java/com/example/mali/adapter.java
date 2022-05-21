@@ -39,12 +39,15 @@ public class adapter extends ArrayAdapter<Task> {
         TextView txtS_task = view.findViewById(R.id.tv_st);
         TextView txtE_task = view.findViewById(R.id.tv_et);
         TextView txt_nombre = view.findViewById(R.id.tv_nombre);
+        TextView txt_status = view.findViewById(R.id.tv_status);
 
         txtID.setText(arrayalisttask.get(position).getId());
-        txtTask.setText(" "+arrayalisttask.get(position).getTitle());
+        txtTask.setText(arrayalisttask.get(position).getTitle());
         txtS_task.setText(arrayalisttask.get(position).getStart_task());
         txtE_task.setText(arrayalisttask.get(position).getEnd_task());
         txt_nombre.setText("Responsible: "+arrayalisttask.get(position).getResponsible());
+        txt_status.setText(arrayalisttask.get(position).getStatus_id());
+
 
         return view;
     }

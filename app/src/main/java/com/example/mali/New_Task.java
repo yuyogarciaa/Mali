@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class create_task extends AppCompatActivity {
+public class New_Task extends AppCompatActivity {
 
     EditText name_t, descrip,start_t, end_t, responsable, userid, proyecto;
     Spinner status, subject;
@@ -35,8 +35,7 @@ public class create_task extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_task);
-
+        setContentView(R.layout.activity_new_task);
         name_t  = findViewById(R.id.task);
         descrip = findViewById(R.id.des);
         start_t = findViewById(R.id.start_task);
@@ -106,18 +105,18 @@ public class create_task extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     if (response.equalsIgnoreCase("assigned task")) {
-                        Toast.makeText(create_task.this, "task created", Toast.LENGTH_LONG).show();
+                        Toast.makeText(New_Task.this, "task created", Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
 
                     } else {
-                        Toast.makeText(create_task.this, response, Toast.LENGTH_LONG).show();
+                        Toast.makeText(New_Task.this, response, Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(create_task.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(New_Task.this,error.getMessage(),Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                 }
             }){
@@ -139,7 +138,7 @@ public class create_task extends AppCompatActivity {
                     return params;
                 }
             };
-            RequestQueue requestQueue = Volley.newRequestQueue(com.example.mali.create_task.this);
+            RequestQueue requestQueue = Volley.newRequestQueue(New_Task.this);
             requestQueue.add(request);
         }
     }

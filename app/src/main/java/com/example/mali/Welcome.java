@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -49,6 +50,7 @@ public class Welcome extends AppCompatActivity {
         list.setAdapter(adapter);
 
 
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -67,6 +69,8 @@ public class Welcome extends AppCompatActivity {
                                 .putExtra("position", position));
                                 break;
                             case 1:
+                                startActivity(new Intent(getApplicationContext(),Edit_task.class)
+                                        .putExtra("position", position));
                                 break;
                             case 2:
                                 break;

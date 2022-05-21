@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
+            android:name=".New_Task"
+            android:exported="false" />
+        <activity
+            android:name=".Edit_task"
+            android:exported="false" />
+        <activity
             android:name=".Detalles"
             android:exported="false" />
         <activity

@@ -1,16 +1,18 @@
 package com.example.mali;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,23 +22,22 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class create_task extends AppCompatActivity {
-
-    EditText name_t, descrip,start_t, end_t, responsable, userid, proyecto;
+public class Edit_task extends AppCompatActivity {
+    TextView st,su;
+    EditText name_t, descrip,start_t, end_t, responsable, userid, proyecto,tvid;
     Spinner status, subject;
-    Button create_task;
+    Button update_task;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_task);
+        setContentView(R.layout.activity_edit_task);
 
+        tvid  = findViewById(R.id.textID);
         name_t  = findViewById(R.id.task);
         descrip = findViewById(R.id.des);
         start_t = findViewById(R.id.start_task);
@@ -46,34 +47,46 @@ public class create_task extends AppCompatActivity {
         proyecto = findViewById(R.id.proyect);
         status = findViewById(R.id.s_status);
         subject = findViewById(R.id.s_subject);
-        create_task = findViewById(R.id.button_ct);
+        st = findViewById(R.id.t_status);
+        su = findViewById(R.id.t_subject);
+        update_task = findViewById(R.id.button_ct);
+
+        update_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updates();
+                startActivity(new Intent(getApplicationContext(),Welcome.class));
+            }
+        });
 
         String [] estatus = {"1","2", "3", "4"};
-        ArrayAdapter <String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, estatus);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, estatus);
         status.setAdapter(adapter1);
-        String s_estatus = subject.getSelectedItem().toString().trim();
+        String s_estatus = status.getSelectedItem().toString().trim();
 
         String [] asunto = {"1","2","3"};
         ArrayAdapter <String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, asunto);
         subject.setAdapter(adapter2);
+        String s_subject = subject.getSelectedItem().toString().trim();
 
-        long ahora = System.currentTimeMillis();
-        Date fecha = new Date(ahora);
+        Intent intent = getIntent();
+        position = intent.getExtras().getInt("position");
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yy");
-        String salida = df.format(fecha).trim();
-
-        create_task.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                insertar();
-            }
-        });
+        tvid.setText(Welcome.arraytask.get(position).getId());
+        name_t.setText(Welcome.arraytask.get(position).getTitle());
+        descrip.setText(Welcome.arraytask.get(position).getDesciption());
+        start_t.setText(Welcome.arraytask.get(position).getStart_task());
+        end_t.setText(Welcome.arraytask.get(position).getStart_task());
+        responsable.setText(Welcome.arraytask.get(position).getResponsible());
+        userid.setText(Welcome.arraytask.get(position).getUsername());
+        proyecto.setText(Welcome.arraytask.get(position).getProject());
+        st.setText(Welcome.arraytask.get(position).getStatus_id()+">>");
+        su.setText(Welcome.arraytask.get(position).getSubject()+ ">>");
     }
 
-    private void insertar() {
+    private void updates() {
 
+        String str_id = tvid.getText().toString().trim();
         String str_task = name_t.getText().toString().trim();
         String str_description = descrip.getText().toString().trim();
         String str_st = start_t.getText().toString().trim();
@@ -82,7 +95,7 @@ public class create_task extends AppCompatActivity {
         String str_userid = userid.getText().toString().trim();
         String str_project = proyecto.getText().toString().trim();
         String s_estatus = status.getSelectedItem().toString().trim();
-        String s_asunto = subject.getSelectedItem().toString();
+        String s_asunto = subject.getSelectedItem().toString().trim();
 
 
         ProgressDialog progressDialog=new ProgressDialog(this);
@@ -100,24 +113,28 @@ public class create_task extends AppCompatActivity {
             userid.setError("Complete el campo");
         }else if(str_project.isEmpty()){
             proyecto.setError("Complete el campo");
+        }else if(s_estatus.isEmpty()){
+            proyecto.setError("Seleccione un campo");
+        }else if(s_asunto.isEmpty()){
+            proyecto.setError("Seleccione el campo");
         }else{
             progressDialog.show();
-            StringRequest request = new StringRequest(Request.Method.POST, "", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, "https://projects-insane.000webhostapp.com/login/update.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    if (response.equalsIgnoreCase("assigned task")) {
-                        Toast.makeText(create_task.this, "task created", Toast.LENGTH_LONG).show();
+                    if (response.equalsIgnoreCase("Update task")) {
+                        Toast.makeText(Edit_task.this, "task created", Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
 
                     } else {
-                        Toast.makeText(create_task.this, response, Toast.LENGTH_LONG).show();
+                        Toast.makeText(Edit_task.this, response, Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(create_task.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(Edit_task.this,error.getMessage(),Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                 }
             }){
@@ -127,6 +144,7 @@ public class create_task extends AppCompatActivity {
 
                     Map<String, String>params=new HashMap<String, String>();
 
+                    params.put("id", str_id);
                     params.put("title", str_task);
                     params.put("Desciption", str_description);
                     params.put("status_id", s_estatus);
@@ -139,7 +157,7 @@ public class create_task extends AppCompatActivity {
                     return params;
                 }
             };
-            RequestQueue requestQueue = Volley.newRequestQueue(com.example.mali.create_task.this);
+            RequestQueue requestQueue = Volley.newRequestQueue(Edit_task.this);
             requestQueue.add(request);
         }
     }

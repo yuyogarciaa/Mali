@@ -1,6 +1,7 @@
 package com.example.mali;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -50,23 +51,24 @@ public class New_Task extends AppCompatActivity {
         String [] estatus = {"1","2", "3", "4"};
         ArrayAdapter <String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, estatus);
         status.setAdapter(adapter1);
-        String s_estatus = subject.getSelectedItem().toString().trim();
+
 
         String [] asunto = {"1","2","3"};
         ArrayAdapter <String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, asunto);
         subject.setAdapter(adapter2);
 
-        long ahora = System.currentTimeMillis();
-        Date fecha = new Date(ahora);
+        //long ahora = System.currentTimeMillis();
+        //Date fecha = new Date(ahora);
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yy");
-        String salida = df.format(fecha).trim();
+        //DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        //String salida = df.format(fecha).trim();
 
         create_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 insertar();
+                startActivity(new Intent(getApplicationContext(), Welcome.class));
             }
         });
     }
@@ -101,7 +103,7 @@ public class New_Task extends AppCompatActivity {
             proyecto.setError("Complete el campo");
         }else{
             progressDialog.show();
-            StringRequest request = new StringRequest(Request.Method.POST, "", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, "https://projects-insane.000webhostapp.com/login/create_task.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     if (response.equalsIgnoreCase("assigned task")) {

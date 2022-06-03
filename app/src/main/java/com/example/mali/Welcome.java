@@ -1,6 +1,7 @@
 package com.example.mali;
 
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,9 +32,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Welcome extends AppCompatActivity {
 
+
+    TextView btn, btn_txt;
     ListView list;
     adapter adapter;
     public static ArrayList<Task>arraytask=new ArrayList<>();
@@ -48,6 +54,25 @@ public class Welcome extends AppCompatActivity {
         list = findViewById(R.id.listview);
         adapter = new adapter(Welcome.this, arraytask);
         list.setAdapter(adapter);
+        btn = findViewById(R.id.btn_create);
+        btn_txt = findViewById(R.id.btn_text);
+
+        btn_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent a = new Intent(Welcome.this, Welcome.class);
+                startActivity(a);
+                finish();
+            }
+        });
+
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Welcome.this, New_Task.class));
+            }
+        });
 
 
 
@@ -73,6 +98,7 @@ public class Welcome extends AppCompatActivity {
                                         .putExtra("position", position));
                                 break;
                             case 2:
+                                DeleteTask(arraytask.get(position).getId());
                                 break;
                         }
                     }
@@ -82,6 +108,38 @@ public class Welcome extends AppCompatActivity {
         });
         mostrardatos();
     }
+
+
+    private void DeleteTask(final String id){
+        StringRequest request = new StringRequest(Request.Method.POST, "https://projects-insane.000webhostapp.com/login/delete_task.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equalsIgnoreCase("Delete task")) {
+                    Toast.makeText(Welcome.this, "delete it", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(getApplicationContext(), Welcome.class));
+                } else {
+                    Toast.makeText(Welcome.this, "no se pudo eleiminar", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Welcome.this,"error",Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String>params = new HashMap<>();
+                params.put("id",id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+    }
+
+
 
     private void mostrardatos() {
 
@@ -135,10 +193,5 @@ public class Welcome extends AppCompatActivity {
 
 
     }
-
-    public  void btnAdd(View view){
-        startActivity(new Intent(getApplicationContext(), create_task.class));
-    }
-
 
 }

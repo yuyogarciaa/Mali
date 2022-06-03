@@ -33,8 +33,8 @@ public class Detalles extends AppCompatActivity {
         id.setText(Welcome.arraytask.get(position).getId());
         name_t.setText(Welcome.arraytask.get(position).getTitle());
         descrip.setText(Welcome.arraytask.get(position).getDesciption());
-        start_t.setText("start_task"+Welcome.arraytask.get(position).getStart_task());
-        end_t.setText("end_task"+Welcome.arraytask.get(position).getStart_task());
+        start_t.setText("start_task: "+Welcome.arraytask.get(position).getStart_task());
+        end_t.setText("end_task: "+Welcome.arraytask.get(position).getStart_task());
         responsable.setText(Welcome.arraytask.get(position).getResponsible());
         userid.setText(Welcome.arraytask.get(position).getUsername());
         proyecto.setText("project: "+Welcome.arraytask.get(position).getProject());

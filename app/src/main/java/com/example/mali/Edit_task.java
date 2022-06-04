@@ -96,6 +96,16 @@ public class Edit_task extends AppCompatActivity {
         String str_project = proyecto.getText().toString().trim();
         String s_estatus = status.getSelectedItem().toString().trim();
         String s_asunto = subject.getSelectedItem().toString().trim();
+        if(s_estatus.equals("TO DO")){   s_estatus= "1".trim(); }
+        else if(s_estatus.equals("IN PROGRESS")){  s_estatus= "2".trim(); }
+        else if(s_estatus.equals("IN REVIEW")){  s_estatus= "3".trim(); }
+        else if(s_estatus.equals("DONE")){  s_estatus= "4".trim(); }
+        else{ Toast.makeText(this,"seleccionar un campo",Toast.LENGTH_LONG).show(); }
+
+        if(s_asunto.equals("RELEASE")){  s_asunto= "1".trim(); }
+        else if(s_asunto.equals("FIX")){  s_asunto= "2".trim(); }
+        else if(s_asunto.equals("BUG")){  s_asunto= "3".trim(); }
+        else{ Toast.makeText(this,"seleccionar un campo",Toast.LENGTH_LONG).show(); }
 
 
         ProgressDialog progressDialog=new ProgressDialog(this);
@@ -119,6 +129,8 @@ public class Edit_task extends AppCompatActivity {
             proyecto.setError("Seleccione el campo");
         }else{
             progressDialog.show();
+            String finalS_estatus = s_estatus;
+            String finalS_asunto = s_asunto;
             StringRequest request = new StringRequest(Request.Method.POST, "https://projects-insane.000webhostapp.com/login/update.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -147,8 +159,8 @@ public class Edit_task extends AppCompatActivity {
                     params.put("id", str_id);
                     params.put("title", str_task);
                     params.put("Desciption", str_description);
-                    params.put("status_id", s_estatus);
-                    params.put("subject", s_asunto);
+                    params.put("status_id", finalS_estatus);
+                    params.put("subject", finalS_asunto);
                     params.put("start_task", str_st);
                     params.put("end_task", str_et);
                     params.put("responsible", str_empleado);

@@ -8,7 +8,7 @@
         android:id="@+id/email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="Username"
         android:background="@drawable/edit_text_bg"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"

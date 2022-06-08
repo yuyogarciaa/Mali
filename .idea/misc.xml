@@ -10,7 +10,9 @@
         <entry key="app/src/main/res/drawable/text_bg.xml" value="0.2545" />
         <entry key="app/src/main/res/drawable/vie_bg.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_detalles.xml" value="0.23076923076923078" />
+        <entry key="app/src/main/res/layout/activity_duser.xml" value="0.3494791666666667" />
         <entry key="app/src/main/res/layout/activity_forget_pass.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.29842446709916587" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.5" />
         <entry key="app/src/main/res/layout/login_tab_fragment.xml" value="0.25" />

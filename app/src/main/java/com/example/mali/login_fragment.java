@@ -27,14 +27,14 @@ import java.util.Map;
 public class login_fragment extends Fragment {
 
     int chace = 2;
-    String str_email,str_password;
+    String str_userid,str_password;
     String url="https://projects-insane.000webhostapp.com/login/validar.php";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.login_tab_fragment,container,false);
 
-        EditText email = root.findViewById(R.id.email);
+        EditText userid = root.findViewById(R.id.email);
         EditText pass = root.findViewById(R.id.pass);
         TextView forget = root.findViewById(R.id.textviewforget);
         Button login = root.findViewById(R.id.btnlogin);
@@ -44,22 +44,22 @@ public class login_fragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (email.getText().toString().equals("")){
+                if (userid.getText().toString().equals("")){
                     Toast.makeText(getContext().getApplicationContext(), "enter your email",Toast.LENGTH_SHORT).show();
                 }
                 else if (pass.getText().toString().equals("")){
                     Toast.makeText(getContext().getApplicationContext(), "enter your password",Toast.LENGTH_SHORT).show();
                 }else{
-                    str_email = email.getText().toString().trim();
+                    str_userid = userid.getText().toString().trim();
                     str_password = pass.getText().toString().trim();
 
                     StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             if (response.equalsIgnoreCase("you entered correctly")) {
-                                email.setText("");
-                                pass.setText("");
-                                startActivity(new Intent(getContext().getApplicationContext(),Welcome.class));
+                                Intent i = new Intent(getContext().getApplicationContext(),Home.class);
+                                i.putExtra("userid", userid.getText().toString());
+                                startActivity(i);
 
                                 chace=2;
                                 Toast.makeText(getContext().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
@@ -76,7 +76,7 @@ public class login_fragment extends Fragment {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                     ) {
@@ -84,7 +84,7 @@ public class login_fragment extends Fragment {
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> params = new HashMap<String, String>();
                             params.put("password", str_password);
-                            params.put("email", str_email);
+                            params.put("userid", str_userid);
                             return params;
                         }
                     };
@@ -102,17 +102,17 @@ public class login_fragment extends Fragment {
         });
 
 
-        email.setTranslationX(800);
+        userid.setTranslationX(800);
         pass.setTranslationX(800);
         forget.setTranslationX(800);
         login.setTranslationX(800);
 
-        email.setAlpha(v);
+        userid.setAlpha(v);
         pass.setAlpha(v);
         forget.setAlpha(v);
         login.setAlpha(v);
 
-        email.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(300).start();
+        userid.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(300).start();
         pass.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
         forget.animate().translationX(0).alpha(1).setDuration(800).setDuration(500).start();
         login.animate().translationX(0).alpha(1).setDuration(800).setDuration(800).start();

@@ -55,7 +55,7 @@ public class Edit_task extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 updates();
-                startActivity(new Intent(getApplicationContext(),Welcome.class));
+
             }
         });
 
@@ -137,6 +137,8 @@ public class Edit_task extends AppCompatActivity {
                     if (response.equalsIgnoreCase("Update task")) {
                         Toast.makeText(Edit_task.this, "task created", Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
+                        startActivity(new Intent(getApplicationContext(),Welcome.class));
+                        finish();
 
                     } else {
                         Toast.makeText(Edit_task.this, response, Toast.LENGTH_LONG).show();

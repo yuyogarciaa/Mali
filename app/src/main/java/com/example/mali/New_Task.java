@@ -68,7 +68,7 @@ public class New_Task extends AppCompatActivity {
             public void onClick(View view) {
 
                 insertar();
-                startActivity(new Intent(getApplicationContext(), Welcome.class));
+
             }
         });
     }
@@ -121,6 +121,8 @@ public class New_Task extends AppCompatActivity {
                     if (response.equalsIgnoreCase("assigned task")) {
                         Toast.makeText(New_Task.this, "task created", Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
+                        startActivity(new Intent(getApplicationContext(), Welcome.class));
+                        finish();
 
                     } else {
                         Toast.makeText(New_Task.this, response, Toast.LENGTH_LONG).show();

@@ -3,7 +3,6 @@ package com.example.mali;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -75,8 +74,6 @@ public class Home extends AppCompatActivity {
             }
         });
 
-
-        String user = getIntent().getStringExtra("userid");
         SharedPreferences preferences = getSharedPreferences("datos",Context.MODE_PRIVATE);
         String userid = preferences.getString("MyUser", "");
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -167,6 +164,61 @@ public class Home extends AppCompatActivity {
                     }
                 });
                 builder.create().show();
+            }
+        });
+
+        record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Record.class));
+            }
+        });
+
+
+        access.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences("datos",Context.MODE_PRIVATE);
+                String userid = preferences.getString("MyUser", "");
+                StringRequest request = new StringRequest(Request.Method.POST, "https://projects-insane.000webhostapp.com/login/V_admin.php", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equalsIgnoreCase("Welcome admin")) {
+                            startActivity(new Intent(getApplicationContext(), Welcome.class));
+                            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                        }else if(response.equalsIgnoreCase("Access denied")){
+                            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                ) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("userid", userid);
+                        return params;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                requestQueue.add(request);
+            }
+        });
+
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences("datos", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("MyUser", "x");
+                editor.commit();
+                String userid = preferences.getString("MyUser", "");
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
     }
@@ -265,8 +317,5 @@ public class Home extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
     }
-
-
-
 
 }
